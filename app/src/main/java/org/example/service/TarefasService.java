@@ -50,6 +50,39 @@ public class TarefasService {
                 .toList();
     }
 
+    public long contarPorStatus(Status status) {
+        return repository.listarTodas().stream()
+                .filter(t -> t.getStatus() == status)
+                .count();
+    }
+
+    public void exibirEstatisticas() {
+        long total = repository.listarTodas().size();
+        long todo = contarPorStatus(Status.TODO);
+        long doing = contarPorStatus(Status.DOING);
+        long done = contarPorStatus(Status.DONE);
+
+        System.out.println("\nESTATÍSTICAS DAS TAREFAS");
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━");
+        System.out.println("Total de tarefas: " + total);
+        System.out.println("A fazer (TODO): " + todo);
+        System.out.println("Em andamento (DOING): " + doing);
+        System.out.println("Concluídas (DONE): " + done);
+        System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
+
+    public Tarefa atualizarStatus(Long id, Status novoStatus) {
+        Optional<Tarefa> tarefaOpt = repository.buscarPorId(id);
+        if (tarefaOpt.isEmpty()) {
+            throw new RuntimeException("Tarefa com ID " + id + " não encontrada");
+        }
+
+        Tarefa tarefa = tarefaOpt.get();
+        tarefa.setStatus(novoStatus);
+
+        return repository.salvar(tarefa);
+    }
+
     public void deletar(Long id) {
         Optional<Tarefa>  tarefa = repository.buscarPorId(id);
         if (tarefa.isEmpty()) {

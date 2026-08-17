@@ -33,7 +33,9 @@ public class MenuTerminal {
                 case 3 -> listarPorCategoria();
                 case 4 -> listarPorPrioridade();
                 case 5 -> listarPorStatus();
-                case 6 -> deletarTarefa();
+                case 6 -> exibirEstatisticas();
+                case 7 -> editarStatusTarefa();
+                case 8 -> deletarTarefa();
                 case 0 -> continuar = false;
                 default -> System.out.println("Opção inválida.");
             }
@@ -50,7 +52,10 @@ public class MenuTerminal {
         System.out.println("3. Listar por categoria");
         System.out.println("4. Listar por prioridade");
         System.out.println("5. Listar por status");
-        System.out.println("6. Deletar tarefa");
+        System.out.println("6. Estatísticas");
+        System.out.println("7. Editar status da tarefa");
+        System.out.println("8. Deletar tarefa");
+
         System.out.println("0. Sair");
         System.out.print("Escolha uma opção: ");
     }
@@ -94,20 +99,20 @@ public class MenuTerminal {
 
                 // Validação 1: Não pode ser passado
                 if (data.isBefore(hoje)) {
-                    System.out.println("❌ Data não pode ser anterior a hoje!");
+                    System.out.println("Data não pode ser anterior a hoje!");
                     continue; // Volta pro início
                 }
 
                 // Validação 2: Não pode ser mais de 100 anos no futuro
                 if (data.isAfter(hoje.plusYears(100))) {
-                    System.out.println("❌ Data não pode ser mais de 100 anos no futuro!");
+                    System.out.println("Data não pode ser mais de 100 anos no futuro!");
                     continue; // Volta pro início
                 }
 
                 return data; // Só retorna se passar nas validações
 
             } catch (DateTimeParseException e) {
-                System.out.println("❌ Data inválida. Use o formato dd/MM/yyyy.");
+                System.out.println("Data inválida. Use o formato dd/MM/yyyy.");
             }
         }
     }
@@ -167,7 +172,61 @@ public class MenuTerminal {
                     tarefa.getPrioridade(),
                     tarefa.getCategoria(),
                     tarefa.getStatus(),
-                    tarefa.getDataTermino().format(FORMATO_DATA));
+                    tarefa.getDataTermino().format(FORMATO_DATA)
+            );
+        }
+    }
+
+
+    private void exibirEstatisticas() {
+        service.exibirEstatisticas();
+    }
+
+    private void editarStatusTarefa() {
+        try {
+            System.out.println("\n📋 Tarefas disponíveis:");
+            List<Tarefa> todas = service.listarTodasOrdenadasPorPrioridade();
+            if (todas.isEmpty()) {
+                System.out.println("❌ Nenhuma tarefa cadastrada.");
+                return;
+            }
+
+            for (Tarefa t : todas) {
+                System.out.printf("ID: %d | %s | Status: %s%n",
+                        t.getId(), t.getNome(), t.getStatus());
+            }
+
+            System.out.print("\nID da tarefa a editar: ");
+            Long id = Long.parseLong(scanner.nextLine().trim());
+
+
+            var tarefaOpt = service.buscarPorId(id);
+            if (tarefaOpt.isEmpty()) {
+                System.out.println("Tarefa não encontrada.");
+                return;
+            }
+
+            Tarefa tarefa = tarefaOpt.get();
+            System.out.println("\nTarefa selecionada:");
+            System.out.printf("ID: %d | Nome: %s | Status atual: %s%n",
+                    tarefa.getId(), tarefa.getNome(), tarefa.getStatus());
+
+
+            System.out.print("\nNovo status (TODO, DOING, DONE): ");
+            String entrada = scanner.nextLine().trim().toUpperCase();
+
+            try {
+                Status novoStatus = Status.valueOf(entrada);
+                service.atualizarStatus(id, novoStatus);
+                System.out.println("Status atualizado com sucesso!");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Status inválido. Use TODO, DOING ou DONE.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("ID inválido. Digite um número.");
+        } catch (RuntimeException e) {
+            System.out.println(" " + e.getMessage());
         }
     }
 
