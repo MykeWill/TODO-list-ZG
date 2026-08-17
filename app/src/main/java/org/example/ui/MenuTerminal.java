@@ -97,19 +97,17 @@ public class MenuTerminal {
                 LocalDate data = LocalDate.parse(entrada, FORMATO_DATA);
                 LocalDate hoje = LocalDate.now();
 
-                // Validação 1: Não pode ser passado
                 if (data.isBefore(hoje)) {
                     System.out.println("Data não pode ser anterior a hoje!");
-                    continue; // Volta pro início
+                    continue;
                 }
 
-                // Validação 2: Não pode ser mais de 100 anos no futuro
                 if (data.isAfter(hoje.plusYears(100))) {
                     System.out.println("Data não pode ser mais de 100 anos no futuro!");
-                    continue; // Volta pro início
+                    continue;
                 }
 
-                return data; // Só retorna se passar nas validações
+                return data;
 
             } catch (DateTimeParseException e) {
                 System.out.println("Data inválida. Use o formato dd/MM/yyyy.");
