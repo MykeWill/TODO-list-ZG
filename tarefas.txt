@@ -1,0 +1,2 @@
+2|tarefa 1|tarefa 1|2025-12-12|3|blabla|TODO
+3|tarefa2|hasdjaskndad|2026-12-05|5|dasddasd|TODO
