@@ -1,10 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List ZG</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<header>
+    <h1>TODO List</h1>
+</header>
 
+<main>
+    <section id="form-section">
+        <form id="form-tarefa">
+            <input type="hidden" id="tarefa-id">
+
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" required>
+
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" required></textarea>
+
+            <label for="dataTermino">Data de término</label>
+            <input type="date" id="dataTermino" required>
+
+            <label for="prioridade">Prioridade (1 a 5)</label>
+            <input type="number" id="prioridade" min="1" max="5" required>
+
+            <label for="categoria">Categoria</label>
+            <input type="text" id="categoria" required>
+
+            <div id="status-container" style="display: none;">
+                <label for="status">Status</label>
+                <select id="status">
+                    <option value="TODO">TODO</option>
+                    <option value="DOING">DOING</option>
+                    <option value="DONE">DONE</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btn-submit">Criar tarefa</button>
+            <button type="button" id="btn-cancelar" style="display: none;">Cancelar</button>
+        </form>
+    </section>
+
+    <section id="filtro-section">
+        <label for="filtro-status">Filtrar por status</label>
+        <select id="filtro-status">
+            <option value="TODAS">Todas</option>
+            <option value="TODO">TODO</option>
+            <option value="DOING">DOING</option>
+            <option value="DONE">DONE</option>
+        </select>
+    </section>
+
+    <section id="lista-section">
+        <ul id="lista-tarefas"></ul>
+    </section>
+</main>
+
+<script type="module" src="js/model.js"></script>
+<script type="module" src="js/repository.js"></script>
+<script type="module" src="js/service.js"></script>
+<script type="module" src="js/ui.js"></script>
 </body>
 </html>
