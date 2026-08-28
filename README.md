@@ -1,5 +1,7 @@
 # TODO List ZG
 
+## Backend
+
 Aplicação backend em Java para gerenciamento de tarefas (TODO List), desenvolvida como parte do desafio ZG-Hero da trilha Java do Acelera ZG.
 
 **Autor:** Myke William Silva e Silva
@@ -49,3 +51,45 @@ Os dados são salvos em texto simples, um registro por linha, com campos separad
 ```
 id|nome|descricao|dataTermino|prioridade|categoria|status
 ```
+
+## Frontend
+
+O frontend está na pasta `Frontend/`, desenvolvido em HTML, CSS e JavaScript puro (sem frameworks ou bibliotecas), utilizando módulos ES (`import`/`export`).
+
+### Como executar
+
+Como o projeto usa módulos JavaScript (`type="module"`), é necessário servir os arquivos por um servidor local — abrir o `index.html` diretamente no navegador (`file://`) não funciona, devido a restrições de segurança (CORS) dos navegadores para módulos.
+
+Uma forma simples de servir os arquivos, usando Python (geralmente já disponível no sistema):
+
+**Linux/macOS:**
+```bash
+cd Frontend
+python3 -m http.server 8000
+```
+
+**Windows:**
+```bash
+cd Frontend
+python -m http.server 8000
+```
+
+Depois, acesse no navegador:
+```
+http://localhost:8000
+```
+
+
+### Funcionalidades
+
+- Criar, listar, editar e excluir tarefas (CRUD completo)
+- Filtro de listagem por status (TODO, DOING, DONE)
+- Validação de data de término (não aceita data anterior à atual)
+- Dados mantidos em memória (sem persistência), conforme escopo desta etapa do desafio
+
+### Arquitetura
+
+- **model/** — classe `Tarefa` e objeto `Status` (simula um enum, já que JavaScript não possui esse tipo nativamente)
+- **repository/** — array em memória + operações de armazenamento (criar, buscar, listar, deletar)
+- **service/** — regras de negócio (ordenação por prioridade, filtros, validações)
+- **ui/** — manipulação do DOM, formulário e eventos
