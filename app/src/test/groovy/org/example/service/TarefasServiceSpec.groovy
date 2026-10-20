@@ -147,6 +147,103 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
+    def "countByStatus returns the number of tasks with the requested status"() {
+        given:
+        def tarefas = [
+                tarefa(1, "Work", Status.TODO),
+                tarefa(2, "Home", Status.DOING),
+                tarefa(3, "Personal", Status.TODO)
+        ]
+
+        when:
+        def resultado = service.contarPorStatus(Status.TODO)
+
+        then:
+        1 * repository.listarTodas() >> tarefas
+        resultado == 2
+    }
+
+    def "displayStatistics prints the total and counts for each status"() {
+        given:
+        def tarefas = [
+                tarefa(1, "Work", Status.TODO),
+                tarefa(2, "Home", Status.DOING),
+                tarefa(3, "Personal", Status.TODO),
+                tarefa(4, "Work", Status.DONE)
+        ]
+        def output = new ByteArrayOutputStream()
+        def originalOut = System.out
+
+        when:
+        try {
+            System.setOut(new PrintStream(output))
+            service.exibirEstatisticas()
+        } finally {
+            System.setOut(originalOut)
+        }
+
+        then:
+        4 * repository.listarTodas() >>> [tarefas, tarefas, tarefas, tarefas]
+        output.toString() contains "Total de tarefas: 4"
+        output.toString() contains "A fazer (TODO): 2"
+        output.toString() contains "Em andamento (DOING): 1"
+        output.toString() contains "Concluídas (DONE): 1"
+    }
+
+    def "updateStatus updates the task, saves it, and returns it"() {
+        given:
+        def id = 42L
+        Tarefa tarefaExistente = tarefa(2, "Work", Status.TODO)
+
+        when:
+        def resultado = service.atualizarStatus(id, Status.DOING)
+
+        then:
+        1 * repository.buscarPorId(id) >> Optional.of(tarefaExistente)
+        1 * repository.salvar({ it.is(tarefaExistente) && it.status == Status.DOING }) >> tarefaExistente
+        resultado.is(tarefaExistente)
+        resultado.status == Status.DOING
+    }
+
+    def "updateStatus throws and does not save when the task does not exist"() {
+        given:
+        def id = 99L
+
+        when:
+        service.atualizarStatus(id, Status.DONE)
+
+        then:
+        1 * repository.buscarPorId(id) >> Optional.empty()
+        0 * repository.salvar(_)
+        thrown(RuntimeException)
+    }
+
+    def "delete removes an existing task"() {
+        given:
+        def id = 42L
+        Tarefa tarefaExistente = tarefa(2, "Work")
+
+        when:
+        service.deletar(id)
+
+        then:
+        1 * repository.buscarPorId(id) >> Optional.of(tarefaExistente)
+        1 * repository.deletar(id)
+    }
+
+    def "delete throws and does not call repository delete when the task does not exist"() {
+        given:
+        def id = 99L
+
+        when:
+        service.deletar(id)
+
+        then:
+        1 * repository.buscarPorId(id) >> Optional.empty()
+        0 * repository.deletar(_)
+        thrown(RuntimeException)
+    }
+
     private static Tarefa tarefa(int prioridade, String categoria, Status status = Status.TODO) {
         def tarefa = new Tarefa("Task", "Description", LocalDate.of(2026, 10, 20), prioridade, categoria)
         tarefa.setStatus(status)
