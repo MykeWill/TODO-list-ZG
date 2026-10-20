@@ -8,7 +8,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/build.gradle`; `gradle/libs.versions.toml` se as dependências forem registradas no catálogo de versões existente.
 - **Como validar:** executar `./gradlew :app:test` e confirmar que o build configura e executa a tarefa de testes sem remover o suporte JUnit existente.
 
-## 2. Especificar as regras do modelo `Tarefa`
+## 2. Especificar as regras do modelo `Tarefa` — Concluída
 
 - **O que será feito:** criar testes Spock para status inicial `TODO`, prioridades válidas 1 e 5, rejeição de prioridades 0 e 6 na criação e no setter de prioridade. Não incluir aqui o caso de status nulo, que pertence à tarefa 6.
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/model/TarefaSpec.groovy`.
