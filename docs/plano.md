@@ -20,7 +20,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`.
 - **Como validar:** executar `./gradlew :app:test --tests org.example.service.TarefasServiceSpec`.
 
-## 4. Especificar contagem, estatísticas, atualização e exclusão
+## 4. Especificar contagem, estatísticas, atualização e exclusão — Concluída
 
 - **O que será feito:** completar os testes normais para `contarPorStatus`, `exibirEstatisticas`, `atualizarStatus` e `deletar`, incluindo estatísticas e contagens com repositório vazio, atualização para cada status suportado, busca de IDs inexistentes e interações esperadas com o repositório. Não incluir status nulo, tratado na tarefa 6.
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`.
