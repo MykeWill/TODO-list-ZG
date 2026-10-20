@@ -14,7 +14,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/model/TarefaSpec.groovy`.
 - **Como validar:** executar `./gradlew :app:test --tests org.example.model.TarefaSpec`.
 
-## 3. Especificar criação, busca, ordenação de resultados e filtros
+## 3. Especificar criação, busca, ordenação de resultados e filtros — Concluída
 
 - **O que será feito:** criar testes unitários para `criar`, `buscarPorId`, `listarTodasOrdenadasPorPrioridade`, `listarPorCategoria`, `listarPorStatus` e `listarPorPrioridade`. Cobrir busca e repositório vazios, resultados sem correspondência, comparação de categoria sem diferenciar maiúsculas, os três status e ordenação dos resultados. Não testar ainda a preservação da lista original do repositório nem os casos de categoria nula, que pertencem às tarefas 5 e 7.
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`.
