@@ -1,5 +1,5 @@
 import { Tarefa } from "./model.js"
-import { salvarTarefaRepository, buscarPorIdRepository, listarTodasRepository, deletarRepository } from "./repository.js"
+import { salvarTarefaRepository, buscarPorIdRepository, listarTodasRepository, deletarRepository, atualizarStatusEmLoteRepository  } from "./repository.js"
 
 export function criarTarefaService(nome, descricao, dataTermino, prioridade, categoria) {
     const tarefa = new Tarefa(nome, descricao, dataTermino, prioridade, categoria)
@@ -44,4 +44,12 @@ export function deleteService(id) {
 
 export function buscarPorIdService(id) {
     return buscarPorIdRepository(id)
+}
+
+export function atualizarStatusEmLoteService(ids, novoStatus) {
+    if (ids.length === 0) {
+        throw new Error("Selecione pelo menos uma tarefa.")
+    }
+
+    atualizarStatusEmLoteRepository(ids, novoStatus)
 }

@@ -1,4 +1,4 @@
-import { criarTarefaService, atualizarService, listarTodasOrdenadasPorPrioridadeService, listarPorStatusService, deleteService, buscarPorIdService } from "./service.js"
+import { criarTarefaService, atualizarService, listarTodasOrdenadasPorPrioridadeService, listarPorStatusService, deleteService, buscarPorIdService, atualizarStatusEmLoteService } from "./service.js"
 
 const form = document.getElementById("form-tarefa")
 const inputId = document.getElementById("tarefa-id")
@@ -14,6 +14,9 @@ const btnCancelar = document.getElementById("btn-cancelar")
 const filtroStatus = document.getElementById("filtro-status")
 const listaTarefas = document.getElementById("lista-tarefas")
 
+const selectStatusLote = document.getElementById("status-lote")
+const btnAplicarLote = document.getElementById("btn-aplicar-lote")
+
 function renderizarLista() {
     const filtro = filtroStatus.value
     const tarefas = filtro === "TODAS" ? listarTodasOrdenadasPorPrioridadeService() : listarPorStatusService(filtro)
@@ -22,8 +25,19 @@ function renderizarLista() {
 
     tarefas.forEach(tarefa => {
         const item = document.createElement("li")
+        item.style.display = "flex"
+        item.style.alignItems = "center"
+        item.style.gap = "10px"
 
-        item.innerHTML = `
+
+        const checkbox = document.createElement("input")
+        checkbox.type = "checkbox"
+        checkbox.className = "check-tarefa"
+        checkbox.dataset.id = tarefa.id
+
+
+        const conteudo = document.createElement("div")
+        conteudo.innerHTML = `
             <strong>${tarefa.nome}</strong> (Prioridade ${tarefa.prioridade})
             <p>${tarefa.descricao}</p>
             <p>Categoria: ${tarefa.categoria} | Prazo: ${tarefa.dataTermino} | Status: ${tarefa.status}</p>
@@ -31,6 +45,8 @@ function renderizarLista() {
             <button class="btn-excluir" data-id="${tarefa.id}">Excluir</button>
         `
 
+        item.appendChild(checkbox)
+        item.appendChild(conteudo)
         listaTarefas.appendChild(item)
     })
 }
@@ -114,6 +130,22 @@ listaTarefas.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("btn-excluir")) {
         deleteService(id)
         renderizarLista()
+    }
+})
+
+btnAplicarLote.addEventListener("click", () => {
+    const checkboxesMarcados = document.querySelectorAll(".check-tarefa:checked")
+    const idsSelecionados = []
+
+    for (let i = 0; i < checkboxesMarcados.length; i++) {
+        idsSelecionados.push(Number(checkboxesMarcados[i].dataset.id))
+    }
+
+    try {
+        atualizarStatusEmLoteService(idsSelecionados, selectStatusLote.value)
+        renderizarLista()
+    } catch (erro) {
+        alert(erro.message)
     }
 })
 
