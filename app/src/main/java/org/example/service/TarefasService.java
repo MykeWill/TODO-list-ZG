@@ -5,6 +5,7 @@ import org.example.model.Tarefa;
 import org.example.repository.TarefasRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +28,22 @@ public class TarefasService {
     }
 
     public List<Tarefa> listarTodasOrdenadasPorPrioridade() {
-        List<Tarefa> tarefas = repository.listarTodas();
+        List<Tarefa> tarefas = new ArrayList<>(repository.listarTodas());
         tarefas.sort(Comparator.comparingInt(Tarefa::getPrioridade));
         return tarefas;
     }
 
     public List<Tarefa> listarPorCategoria(String categoria) {
         return listarTodasOrdenadasPorPrioridade().stream()
-                .filter(t -> t.getCategoria().equalsIgnoreCase(categoria))
+                .filter(t -> categoria != null && t.getCategoria() != null
+                        && t.getCategoria().equalsIgnoreCase(categoria))
                 .toList();
     }
 
     public List<Tarefa> listarPorStatus(Status status) {
+        if (status == null) {
+            return List.of();
+        }
         return listarTodasOrdenadasPorPrioridade().stream()
                 .filter(t -> t.getStatus() == status)
                 .toList();
@@ -51,6 +56,9 @@ public class TarefasService {
     }
 
     public long contarPorStatus(Status status) {
+        if (status == null) {
+            return 0;
+        }
         return repository.listarTodas().stream()
                 .filter(t -> t.getStatus() == status)
                 .count();
