@@ -93,3 +93,8 @@ http://localhost:8000
 - **repository/** — array em memória + operações de armazenamento (criar, buscar, listar, deletar)
 - **service/** — regras de negócio (ordenação por prioridade, filtros, validações)
 - **ui/** — manipulação do DOM, formulário e eventos
+
+## Novas Funcionalidades (Frontend)
+
+- **Persistência de dados:** As tarefas agora são salvas no `localStorage` do navegador. Ao recarregar a página, as tarefas não são mais perdidas.
+- **Alteração de status em lote:** Foi adicionada uma seção de "Ações em Lote". O usuário pode marcar o checkbox de várias tarefas na lista, selecionar o novo status no menu (TODO, DOING ou DONE) e clicar em "Aplicar nas selecionadas" para mudar o status de todas de uma vez.
