@@ -44,7 +44,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`; `app/src/main/java/org/example/service/TarefasService.java`.
 - **Como validar:** executar `./gradlew :app:test --tests org.example.service.TarefasServiceSpec` e conferir simultaneamente a ordem do resultado e a ordem inalterada da lista original.
 
-## 8. Executar a suíte completa
+## 8. Executar a suíte completa — Concluída
 
 - **O que será feito:** validar em conjunto os testes Spock e a compatibilidade do build com JUnit Jupiter; corrigir apenas problemas introduzidos por esta implementação.
 - **Arquivos criados ou alterados:** nenhum arquivo planejado; ajustes somente se os testes ou o build identificarem falhas relacionadas às tarefas anteriores.
