@@ -12,7 +12,7 @@ class TarefasServiceSpec extends Specification {
     TarefasRepository repository = Mock()
     TarefasService service = new TarefasService(repository)
 
-    def "create saves the task and returns the saved task"() {
+    def "criar salva a tarefa e retorna a tarefa salva"() {
         given:
         Tarefa tarefaSalva = tarefa(3, "Work")
 
@@ -31,7 +31,7 @@ class TarefasServiceSpec extends Specification {
         resultado.is(tarefaSalva)
     }
 
-    def "findById returns the repository Optional when a task exists"() {
+    def "buscarPorId retorna o Optional do repositório quando a tarefa existe"() {
         given:
         def id = 42L
         Tarefa tarefaEncontrada = tarefa(2, "Work")
@@ -45,7 +45,7 @@ class TarefasServiceSpec extends Specification {
         resultado.is(resultadoEsperado)
     }
 
-    def "findById returns the empty repository Optional when no task exists"() {
+    def "buscarPorId retorna o Optional vazio do repositório quando a tarefa não existe"() {
         given:
         def id = 99L
         Optional<Tarefa> resultadoEsperado = Optional.empty()
@@ -58,7 +58,7 @@ class TarefasServiceSpec extends Specification {
         resultado.is(resultadoEsperado)
     }
 
-    def "listAll returns tasks ordered by ascending priority"() {
+    def "listarTodas retorna tarefas ordenadas por prioridade crescente"() {
         given:
         def tarefas = [tarefa(5, "Work"), tarefa(2, "Work"), tarefa(4, "Work"), tarefa(1, "Work"), tarefa(3, "Work")]
 
@@ -70,7 +70,7 @@ class TarefasServiceSpec extends Specification {
         resultado*.prioridade == [1, 2, 3, 4, 5]
     }
 
-    def "listAll does not mutate the repository task list"() {
+    def "listarTodas não modifica a lista de tarefas do repositório"() {
         given:
         def tarefas = [tarefa(5, "Work"), tarefa(2, "Work"), tarefa(4, "Work")]
         def ordemOriginal = tarefas.toList()
@@ -84,7 +84,7 @@ class TarefasServiceSpec extends Specification {
         tarefas == ordemOriginal
     }
 
-    def "filter by category without case sensitivity"() {
+    def "filtrar por categoria sem diferenciar maiúsculas de minúsculas"() {
         given:
         def tarefas = [tarefa(4, "Personal"), tarefa(3, "WORK"), tarefa(1, "Work")]
 
@@ -97,7 +97,7 @@ class TarefasServiceSpec extends Specification {
         resultado*.prioridade == [1, 3]
     }
 
-    def "filter by category returns an empty list when there are no matches"() {
+    def "filtrar por categoria retorna lista vazia quando não há correspondências"() {
         given:
         def tarefas = [tarefa(1, "Personal"), tarefa(2, "Home")]
 
@@ -109,7 +109,7 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
-    def "filter by category excludes tasks with a null category"() {
+    def "filtrar por categoria exclui tarefas com categoria nula"() {
         given:
         def tarefaSemCategoria = tarefa(1, null)
         def tarefaDaCategoria = tarefa(2, "Work")
@@ -123,7 +123,7 @@ class TarefasServiceSpec extends Specification {
         resultado == [tarefaDaCategoria]
     }
 
-    def "filter by a null category returns an empty list"() {
+    def "filtrar por categoria nula retorna uma lista vazia"() {
         given:
         def tarefas = [tarefa(1, null), tarefa(2, "Work")]
 
@@ -135,7 +135,7 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
-    def "filter by status #status"() {
+    def "filtrar por status #status"() {
         given:
         def tarefas = [tarefa(3, "Work", Status.TODO), tarefa(1, "Home", Status.DOING), tarefa(2, "Work", Status.DONE)]
 
@@ -151,7 +151,7 @@ class TarefasServiceSpec extends Specification {
         status << [Status.TODO, Status.DOING, Status.DONE]
     }
 
-    def "filter by status returns an empty list when there are no matches"() {
+    def "filtrar por status retorna lista vazia quando não há correspondências"() {
         given:
         def tarefas = [tarefa(1, "Work", Status.TODO), tarefa(2, "Home", Status.DOING)]
 
@@ -163,7 +163,7 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
-    def "filter by a null status returns an empty list"() {
+    def "filtrar por status nulo retorna uma lista vazia"() {
         when:
         def resultado = service.listarPorStatus(null)
 
@@ -172,7 +172,7 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
-    def "filter by exact priority"() {
+    def "filtrar pela prioridade exata"() {
         given:
         def tarefas = [tarefa(3, "Work"), tarefa(2, "Home"), tarefa(2, "Personal"), tarefa(1, "Work")]
 
@@ -184,7 +184,7 @@ class TarefasServiceSpec extends Specification {
         resultado*.prioridade == [2, 2]
     }
 
-    def "filter by priority returns an empty list when there are no matches"() {
+    def "filtrar por prioridade retorna lista vazia quando não há correspondências"() {
         given:
         def tarefas = [tarefa(1, "Work"), tarefa(3, "Home")]
 
@@ -196,7 +196,7 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
-    def "countByStatus returns the number of tasks with the requested status"() {
+    def "contarPorStatus retorna o número de tarefas com o status informado"() {
         given:
         def tarefas = [
                 tarefa(1, "Work", Status.TODO),
@@ -212,7 +212,7 @@ class TarefasServiceSpec extends Specification {
         resultado == 2
     }
 
-    def "countByStatus returns zero for a null status"() {
+    def "contarPorStatus retorna zero para status nulo"() {
         when:
         def resultado = service.contarPorStatus(null)
 
@@ -221,7 +221,7 @@ class TarefasServiceSpec extends Specification {
         resultado == 0
     }
 
-    def "displayStatistics prints the total and counts for each status"() {
+    def "exibirEstatisticas imprime o total e a contagem de cada status"() {
         given:
         def tarefas = [
                 tarefa(1, "Work", Status.TODO),
@@ -248,7 +248,7 @@ class TarefasServiceSpec extends Specification {
         output.toString() contains "Concluídas (DONE): 1"
     }
 
-    def "updateStatus updates the task, saves it, and returns it"() {
+    def "atualizarStatus atualiza a tarefa, salva e retorna a tarefa atualizada"() {
         given:
         def id = 42L
         Tarefa tarefaExistente = tarefa(2, "Work", Status.TODO)
@@ -263,7 +263,7 @@ class TarefasServiceSpec extends Specification {
         resultado.status == Status.DOING
     }
 
-    def "updateStatus rejects null and does not save the task"() {
+    def "atualizarStatus rejeita nulo e não salva a tarefa"() {
         given:
         def id = 42L
         Tarefa tarefaExistente = tarefa(2, "Work", Status.TODO)
@@ -278,7 +278,7 @@ class TarefasServiceSpec extends Specification {
         tarefaExistente.status == Status.TODO
     }
 
-    def "updateStatus throws and does not save when the task does not exist"() {
+    def "atualizarStatus lança exceção e não salva quando a tarefa não existe"() {
         given:
         def id = 99L
 
@@ -291,7 +291,7 @@ class TarefasServiceSpec extends Specification {
         thrown(RuntimeException)
     }
 
-    def "delete removes an existing task"() {
+    def "deletar remove uma tarefa existente"() {
         given:
         def id = 42L
         Tarefa tarefaExistente = tarefa(2, "Work")
@@ -304,7 +304,7 @@ class TarefasServiceSpec extends Specification {
         1 * repository.deletar(id)
     }
 
-    def "delete throws and does not call repository delete when the task does not exist"() {
+    def "deletar lança exceção e não chama a exclusão no repositório quando a tarefa não existe"() {
         given:
         def id = 99L
 
