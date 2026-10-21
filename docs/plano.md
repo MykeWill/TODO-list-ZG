@@ -26,7 +26,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`.
 - **Como validar:** executar `./gradlew :app:test --tests org.example.service.TarefasServiceSpec` e conferir as interações com repositório e a saída capturada das estatísticas.
 
-## 5. Corrigir e testar o filtro por categoria nula
+## 5. Corrigir e testar o filtro por categoria nula — Concluída
 
 - **O que será feito:** adicionar testes para tarefas com categoria nula e para uma consulta com categoria nula; assegurar que o filtro não lança `NullPointerException` e que esses casos retornam lista vazia. Corrigir somente a comparação do filtro necessária para cumprir esse contrato.
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`; `app/src/main/java/org/example/service/TarefasService.java`.
