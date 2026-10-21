@@ -70,6 +70,20 @@ class TarefasServiceSpec extends Specification {
         resultado*.prioridade == [1, 2, 3, 4, 5]
     }
 
+    def "listAll does not mutate the repository task list"() {
+        given:
+        def tarefas = [tarefa(5, "Work"), tarefa(2, "Work"), tarefa(4, "Work")]
+        def ordemOriginal = tarefas.toList()
+
+        when:
+        def resultado = service.listarTodasOrdenadasPorPrioridade()
+
+        then:
+        1 * repository.listarTodas() >> tarefas
+        resultado*.prioridade == [2, 4, 5]
+        tarefas == ordemOriginal
+    }
+
     def "filter by category without case sensitivity"() {
         given:
         def tarefas = [tarefa(4, "Personal"), tarefa(3, "WORK"), tarefa(1, "Work")]

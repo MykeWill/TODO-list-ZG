@@ -5,6 +5,7 @@ import org.example.model.Tarefa;
 import org.example.repository.TarefasRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class TarefasService {
     }
 
     public List<Tarefa> listarTodasOrdenadasPorPrioridade() {
-        List<Tarefa> tarefas = repository.listarTodas();
+        List<Tarefa> tarefas = new ArrayList<>(repository.listarTodas());
         tarefas.sort(Comparator.comparingInt(Tarefa::getPrioridade));
         return tarefas;
     }
