@@ -38,7 +38,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/model/TarefaSpec.groovy`; `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`; `app/src/main/java/org/example/model/Tarefa.java` e, somente se necessário para o contrato, `app/src/main/java/org/example/service/TarefasService.java`.
 - **Como validar:** executar `./gradlew :app:test --tests org.example.model.TarefaSpec --tests org.example.service.TarefasServiceSpec` e verificar que não ocorre salvamento nos casos rejeitados.
 
-## 7. Corrigir e testar a ordenação sem mutar o repositório
+## 7. Corrigir e testar a ordenação sem mutar o repositório — Concluída
 
 - **O que será feito:** acrescentar testes que preservem a ordem e o conteúdo da lista original devolvida pelo repositório após listagem e filtros; corrigir o serviço para ordenar uma cópia, sem mudar a prioridade crescente dos resultados.
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`; `app/src/main/java/org/example/service/TarefasService.java`.
