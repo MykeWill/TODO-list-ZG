@@ -14,6 +14,27 @@ class TarefaSpec extends Specification {
         tarefa.status == Status.TODO
     }
 
+    def "constructor does not create a task with a null status"() {
+        when:
+        def tarefa = new Tarefa("Estudar", "Revisar conteúdo", LocalDate.of(2026, 10, 20), 3, "Estudos")
+
+        then:
+        tarefa.status != null
+        tarefa.status == Status.TODO
+    }
+
+    def "setStatus rejects null and keeps the previous status"() {
+        given:
+        def tarefa = new Tarefa("Estudar", "Revisar conteúdo", LocalDate.of(2026, 10, 20), 3, "Estudos")
+
+        when:
+        tarefa.setStatus(null)
+
+        then:
+        thrown(IllegalArgumentException)
+        tarefa.status == Status.TODO
+    }
+
     def "constructor accepts valid priority #prioridade"() {
         when:
         def tarefa = new Tarefa("Estudar", "Revisar conteúdo", LocalDate.of(2026, 10, 20), prioridade, "Estudos")

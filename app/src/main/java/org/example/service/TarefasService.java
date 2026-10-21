@@ -40,6 +40,9 @@ public class TarefasService {
     }
 
     public List<Tarefa> listarPorStatus(Status status) {
+        if (status == null) {
+            return List.of();
+        }
         return listarTodasOrdenadasPorPrioridade().stream()
                 .filter(t -> t.getStatus() == status)
                 .toList();
@@ -52,6 +55,9 @@ public class TarefasService {
     }
 
     public long contarPorStatus(Status status) {
+        if (status == null) {
+            return 0;
+        }
         return repository.listarTodas().stream()
                 .filter(t -> t.getStatus() == status)
                 .count();

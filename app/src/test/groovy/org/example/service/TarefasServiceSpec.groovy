@@ -149,6 +149,15 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
+    def "filter by a null status returns an empty list"() {
+        when:
+        def resultado = service.listarPorStatus(null)
+
+        then:
+        0 * repository.listarTodas()
+        resultado.empty
+    }
+
     def "filter by exact priority"() {
         given:
         def tarefas = [tarefa(3, "Work"), tarefa(2, "Home"), tarefa(2, "Personal"), tarefa(1, "Work")]
@@ -187,6 +196,15 @@ class TarefasServiceSpec extends Specification {
         then:
         1 * repository.listarTodas() >> tarefas
         resultado == 2
+    }
+
+    def "countByStatus returns zero for a null status"() {
+        when:
+        def resultado = service.contarPorStatus(null)
+
+        then:
+        0 * repository.listarTodas()
+        resultado == 0
     }
 
     def "displayStatistics prints the total and counts for each status"() {
@@ -229,6 +247,21 @@ class TarefasServiceSpec extends Specification {
         1 * repository.salvar({ it.is(tarefaExistente) && it.status == Status.DOING }) >> tarefaExistente
         resultado.is(tarefaExistente)
         resultado.status == Status.DOING
+    }
+
+    def "updateStatus rejects null and does not save the task"() {
+        given:
+        def id = 42L
+        Tarefa tarefaExistente = tarefa(2, "Work", Status.TODO)
+
+        when:
+        service.atualizarStatus(id, null)
+
+        then:
+        1 * repository.buscarPorId(id) >> Optional.of(tarefaExistente)
+        0 * repository.salvar(_)
+        thrown(IllegalArgumentException)
+        tarefaExistente.status == Status.TODO
     }
 
     def "updateStatus throws and does not save when the task does not exist"() {
