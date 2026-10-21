@@ -95,6 +95,32 @@ class TarefasServiceSpec extends Specification {
         resultado.empty
     }
 
+    def "filter by category excludes tasks with a null category"() {
+        given:
+        def tarefaSemCategoria = tarefa(1, null)
+        def tarefaDaCategoria = tarefa(2, "Work")
+        def tarefas = [tarefaSemCategoria, tarefaDaCategoria]
+
+        when:
+        def resultado = service.listarPorCategoria("Work")
+
+        then:
+        1 * repository.listarTodas() >> tarefas
+        resultado == [tarefaDaCategoria]
+    }
+
+    def "filter by a null category returns an empty list"() {
+        given:
+        def tarefas = [tarefa(1, null), tarefa(2, "Work")]
+
+        when:
+        def resultado = service.listarPorCategoria(null)
+
+        then:
+        1 * repository.listarTodas() >> tarefas
+        resultado.empty
+    }
+
     def "filter by status #status"() {
         given:
         def tarefas = [tarefa(3, "Work", Status.TODO), tarefa(1, "Home", Status.DOING), tarefa(2, "Work", Status.DONE)]

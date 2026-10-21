@@ -34,7 +34,8 @@ public class TarefasService {
 
     public List<Tarefa> listarPorCategoria(String categoria) {
         return listarTodasOrdenadasPorPrioridade().stream()
-                .filter(t -> t.getCategoria().equalsIgnoreCase(categoria))
+                .filter(t -> categoria != null && t.getCategoria() != null
+                        && t.getCategoria().equalsIgnoreCase(categoria))
                 .toList();
     }
 
