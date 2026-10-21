@@ -32,7 +32,7 @@ O plano segue a [spec.md](./spec.md). As tarefas estão ordenadas por dependênc
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`; `app/src/main/java/org/example/service/TarefasService.java`.
 - **Como validar:** executar `./gradlew :app:test --tests org.example.service.TarefasServiceSpec` e confirmar que ambos os cenários nulos passam, sem alterar os cenários normais de categoria.
 
-## 6. Corrigir e testar a rejeição de status nulo
+## 6. Corrigir e testar a rejeição de status nulo — Concluída
 
 - **O que será feito:** testar que `Tarefa` rejeita status nulo sem perder o status válido atual, que a consulta e a contagem por status nulo retornam lista vazia e zero, e que uma tentativa de atualização para status nulo falha sem salvar a tarefa. Corrigir a validação do setter de status, mantendo o serviço sem persistir a atualização rejeitada.
 - **Arquivos criados ou alterados:** `app/src/test/groovy/org/example/model/TarefaSpec.groovy`; `app/src/test/groovy/org/example/service/TarefasServiceSpec.groovy`; `app/src/main/java/org/example/model/Tarefa.java` e, somente se necessário para o contrato, `app/src/main/java/org/example/service/TarefasService.java`.
